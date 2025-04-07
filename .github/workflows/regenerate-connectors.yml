@@ -21,8 +21,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Release Ballerina Libraries
-        uses: ballerina-platform/ballerina-action@2201.9.0
+      - name: Regenerate OpenAPI Connectors
+        uses: ballerina-platform/ballerina-action@main
         with:
           args: run
         env:
