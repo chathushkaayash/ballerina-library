@@ -1,0 +1,33 @@
+name: Regenerate OpenAPI Connectors
+
+on:
+  workflow_dispatch:
+    inputs:
+      flatten_openapi:
+        description: "Enable OpenAPI Flattening"
+        required: false
+        type: boolean
+        default: false
+      align_openapi:
+        description: "Enable OpenAPI Alignment"
+        required: false
+        type: boolean
+        default: false
+jobs:
+  build:
+    name: Regenerate OpenAPI Connectors
+    runs-on: ubuntu-latest
+    # if: github.repository_owner == 'ballerina-platform'
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Release Ballerina Libraries
+        uses: ballerina-platform/ballerina-action@2201.9.0
+        with:
+          args: run
+        env:
+          WORKING_DIR: ./regenerate-openapi-connectors
+          BALLERINA_BOT_TOKEN: ${{ secrets.BALLERINA_BOT_TOKEN }}
+          FLATTEN_OPENAPI: ${{ github.event.inputs.flatten_openapi }}
+          ALIGN_OPENAPI: ${{ github.event.inputs.align_openapi }}
+          BAL_CONFIG_VAR_WORKFLOW: "regenerate-connector.yml"
