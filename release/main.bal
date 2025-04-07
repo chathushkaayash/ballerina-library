@@ -29,7 +29,7 @@ const string RELEASE_HANDWRITTEN_CONNECTORS = "RELEASE_HANDWRITTEN_CONNECTORS";
 const string RELEASE_GENERATED_CONNECTORS = "RELEASE_GENERATED_CONNECTORS";
 
 const string MODULE_LIST_JSON = "./resources/stdlib_modules.json";
-const string GITHUB_ORG = "ballerina-platform";
+const string GITHUB_ORG = "chathushkaayash";
 
 const decimal WORKFLOW_START_WAIT_TIME = 2;
 const decimal WORKFLOW_POLL_INTERVAL = 5;
