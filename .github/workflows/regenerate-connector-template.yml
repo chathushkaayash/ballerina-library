@@ -3,20 +3,30 @@ name: Regenerate openapi-connector
 on:
   workflow_dispatch:
     inputs:
-      openapi_url:
+      openapi-url:
         description: "URL of the OpenAPI JSON"
         required: false
         type: string
-      flatten_openapi:
+      flatten-openapi:
         description: "Enable OpenAPI Flattening"
         required: false
         type: boolean
         default: false
-      align_openapi:
+      additional-flatten-flags:
+        description: "Additional flags for OpenAPI Flattening"
+        required: false
+        type: string
+        default: ""
+      align-openapi:
         description: "Enable OpenAPI Alignment"
         required: false
         type: boolean
         default: false
+      additional-align-flags:
+        description: "Additional flags for OpenAPI Alignment"
+        required: false
+        type: string
+        default: ""
 
 jobs:
   build:
@@ -60,28 +70,28 @@ jobs:
 
       - name: Download or Copy openapi.json
         run: |
-          if [ -n "${{ inputs.openapi_url }}" ]; then
+          if [ -n "${{ inputs.openapi-url }}" ]; then
             echo "Downloading openapi.json from provided URL..."
-            wget -O ballerina/openapi.json "${{ inputs.openapi_url }}"
+            wget -O ballerina/openapi.json "${{ inputs.openapi-url }}"
           else
             echo "Using existing openapi.json from docs/spec directory..."
             cp docs/spec/openapi.json ballerina/openapi.json
           fi
 
       - name: Flatten OpenAPI Specification
-        if: ${{ inputs.flatten_openapi }}
+        if: ${{ inputs.flatten-openapi }}
         working-directory: ballerina
         run: |
           echo "Flattening OpenAPI Specification..."
-          bal openapi flatten -i openapi.json
+          bal openapi flatten -i openapi.json ${{ inputs.additional-flatten-flags }}
           mv flattened_openapi.json openapi.json
 
       - name: Align OpenAPI Specification
         working-directory: ballerina
-        if: ${{ inputs.align_openapi }}
+        if: ${{ inputs.align-openapi }}
         run: |
           echo "Aligning OpenAPI Specification..."
-          bal openapi align -i openapi.json
+          bal openapi align -i openapi.json ${{ inputs.additional-align-flags }}
           mv aligned_ballerina_openapi.json openapi.json
 
       - name: Generate Ballerina Code

@@ -21,7 +21,9 @@ import ballerinax/github;
 
 const string ACCESS_TOKEN_ENV = "BALLERINA_BOT_TOKEN";
 const string FLATTEN_OPENAPI = "FLATTEN_OPENAPI";
+const string ADDITIONAL_FLATTEN_FLAGS = "ADDITIONAL_FLATTEN_FLAGS";
 const string ALIGN_OPENAPI = "ALIGN_OPENAPI";
+const string ADDITIONAL_ALIGN_FLAGS = "ADDITIONAL_ALIGN_FLAGS";
 
 const string MODULE_LIST_JSON = "./resources/stdlib_modules.json";
 const string GITHUB_ORG = "chathushkaayash";
@@ -32,7 +34,9 @@ const decimal WORKFLOW_POLL_INTERVAL = 5;
 configurable string token = os:getEnv(ACCESS_TOKEN_ENV);
 
 configurable boolean flattenOpenAPI = check boolean:fromString(os:getEnv(FLATTEN_OPENAPI));
+configurable string additionalFlattenFlags = os:getEnv(ADDITIONAL_FLATTEN_FLAGS);
 configurable boolean alignOpenAPI = check boolean:fromString(os:getEnv(ALIGN_OPENAPI));
+configurable string additionalAlignFlags = os:getEnv(ADDITIONAL_ALIGN_FLAGS);
 
 // Provide the correct workflow as a configurable variable.
 configurable string workflow = ?;
@@ -109,8 +113,10 @@ isolated function triggerModuleRegeneration(Module m) returns int|error {
     github:Workflow_id_dispatches_body payload = {
         ref: m.default_branch,
         inputs: {
-            "flatten_openapi": flattenOpenAPI,
-            "align_openapi": alignOpenAPI
+            "flatten-openapi": flattenOpenAPI,
+            "additional-flatten-flags": additionalFlattenFlags,
+            "align-openapi": alignOpenAPI,
+            "additional-align-flags": additionalAlignFlags
         }
     };
 
