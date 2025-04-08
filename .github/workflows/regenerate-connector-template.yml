@@ -77,13 +77,13 @@ jobs:
       - name: Get Ballerina Distribution
         if: ${{ inputs.distribution-zip }}
         run: |
+          pwd
           echo "Downloading Ballerina distribution from provided URL..."
           wget --no-check-certificate -O ballerina.zip "${{ inputs.distribution-zip }}"
           unzip -o ballerina.zip -d temp_folder/ -q
           cp -r temp_folder/ballerina-*/. ballerina-dist/
           rm -r temp_folder/
           BALLERINA_BIN="../../ballerina-dist/bin/bal"
-          ls
 
       - name: Download openapi.json
         if: ${{ inputs.openapi-url }}
@@ -112,6 +112,8 @@ jobs:
       - name: Generate Ballerina Code
         working-directory: docs/spec
         run: |
+          ls
+          ../../ballerina-dist/bin/bal -v
           echo "Generating Ballerina code from OpenAPI Specification..."
           $BALLERINA_BIN openapi -i openapi.json -o ../../ballerina/  --mode client
 
