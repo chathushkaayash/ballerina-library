@@ -114,8 +114,8 @@ jobs:
         run: |
           ls
           ../../ballerina-dist/bin/bal -v
-          $BALLERINA_BIN -v
           echo $BALLERINA_BIN
+          $BALLERINA_BIN -v
           echo "Generating Ballerina code from OpenAPI Specification..."
           $BALLERINA_BIN openapi -i openapi.json -o ../../ballerina/  --mode client
 
