@@ -27,6 +27,11 @@ on:
         required: false
         type: string
         default: ""
+      additional-generation-flags:
+        description: "Additional flags for OpenAPI Generation"
+        required: false
+        type: string
+        default: ""
       distribution-zip:
         description: "Distribution of the Ballerina version to be used"
         required: false
@@ -136,7 +141,7 @@ jobs:
         working-directory: docs/spec
         run: |
           echo "Generating Ballerina code from OpenAPI Specification..."
-          ${{ env.BALLERINA_CMD }} openapi -i openapi.${{ env.EXTENSION}} -o ../../ballerina/  --mode client --license ../license.txt
+          ${{ env.BALLERINA_CMD }} openapi -i openapi.${{ env.EXTENSION}} -o ../../ballerina/  --mode client --license ../license.txt ${{ inputs.additional-generation-flags }}
 
       - name: Configure Git Identity
         run: |

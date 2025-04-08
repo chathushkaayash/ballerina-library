@@ -23,6 +23,11 @@ on:
         required: false
         type: string
         default: ""
+      additional-generation-flags:
+        description: "Additional flags for OpenAPI Generation"
+        required: false
+        type: string
+        default: ""
       distribution-zip:
         description: "Distribution of the Ballerina version to be used"
         required: false
@@ -58,6 +63,7 @@ jobs:
           ADDITIONAL_FLATTEN_FLAGS: ${{ github.event.inputs.additional-flatten-flags }}
           ALIGN_OPENAPI: ${{ github.event.inputs.align-openapi }}
           ADDITIONAL_ALIGN_FLAGS: ${{ github.event.inputs.additional-align-flags }}
+          ADDITIONAL_GENERATION_FLAGS: ${{ github.event.inputs.additional-generation-flags }}
           DISTRIBUTION_ZIP: ${{ github.event.inputs.distribution-zip }}
           AUTO_MERGE: ${{ github.event.inputs.auto-merge }}
           BALLERINA_VERSION: ${{ github.event.inputs.ballerina-version }}
