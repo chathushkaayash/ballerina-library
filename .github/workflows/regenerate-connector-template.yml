@@ -55,7 +55,7 @@ jobs:
           token: ${{ secrets.BALLERINA_BOT_TOKEN }}
 
       - name: Set Ballerina Version
-        if: ${{ inputs.ballerina-version != '' }}
+        if: ${{ inputs.ballerina-version }}
         run: |
           FILE="gradle.properties"
           sed -i "s/^ballerinaLangVersion=.*/ballerinaLangVersion=${{ inputs.ballerina-version }}/" "$FILE"
@@ -99,7 +99,7 @@ jobs:
           wget -q --no-check-certificate -O ballerina.zip "${{ inputs.distribution-zip }}"
           unzip -o -q ballerina.zip -d temp_folder/
           cp -r temp_folder/ballerina-*/. ballerina-dist/
-          rm -r temp_folder/
+          rm -r temp_folder/ ballerina.zip
           echo "BALLERINA_CMD=${PWD}/ballerina-dist/bin/bal" >> $GITHUB_ENV
 
       - name: Download openapi.json
@@ -143,12 +143,16 @@ jobs:
           git config user.name "chathushkaayash"
           git config user.email "chathushkaayash@gmail.com"
 
+      - name: Remove Downloaded Ballerina Distribution
+        if: ${{ inputs.distribution-zip }}
+        run: |
+          rm -r ballerina-dist/
+
       - name: Commit Files
         id: commitFiles
         run: |
           git checkout -b regenerate-openapi-connector-${{ github.run_number }}
-          git add ballerina
-          git add docs/spec
+          git add .
           if git diff --cached --quiet;
           then
               echo "hasChanged=false" >> $GITHUB_OUTPUT
