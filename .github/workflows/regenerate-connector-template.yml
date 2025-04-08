@@ -113,7 +113,7 @@ jobs:
         working-directory: docs/spec
         run: |
           echo "Generating Ballerina code from OpenAPI Specification..."
-          ${{ env.BALLERINA_BIN }} openapi -i openapi.json -o ../../ballerina/  --mode client
+          ${{ env.BALLERINA_BIN }} openapi -i openapi.json -o ../../ballerina/  --mode client --license ../license.txt
 
 
       - name: Configure Git Identity
