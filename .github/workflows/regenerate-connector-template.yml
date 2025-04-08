@@ -1,4 +1,4 @@
-name: Regenerate openapi-connector
+name: Regenerate OpenAPI Connectors Template
 
 on:
   workflow_call:
