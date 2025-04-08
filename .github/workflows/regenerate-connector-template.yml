@@ -1,7 +1,7 @@
 name: Regenerate openapi-connector
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       openapi-url:
         description: "URL of the OpenAPI JSON"
