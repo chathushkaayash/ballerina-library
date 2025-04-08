@@ -68,7 +68,10 @@ public function main() returns error? {
         return;
     }
     foreach Module m in modules {
-        int workflowId = check triggerModuleRegeneration(m);
+        int|error workflowId = triggerModuleRegeneration(m);
+        if workflowId is error {
+            continue;
+        }
         processingModules.push({
             workflowId,
             m
