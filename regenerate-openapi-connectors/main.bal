@@ -38,7 +38,7 @@ configurable boolean flattenOpenAPI = check boolean:fromString(os:getEnv(FLATTEN
 configurable string additionalFlattenFlags = os:getEnv(ADDITIONAL_FLATTEN_FLAGS);
 configurable boolean alignOpenAPI = check boolean:fromString(os:getEnv(ALIGN_OPENAPI));
 configurable string additionalAlignFlags = os:getEnv(ADDITIONAL_ALIGN_FLAGS);
-configurable boolean distributionZip = check boolean:fromString(os:getEnv(DISTRIBUTION_ZIP));
+configurable string distributionZip = os:getEnv(DISTRIBUTION_ZIP);
 
 // Provide the correct workflow as a configurable variable.
 configurable string workflow = ?;
