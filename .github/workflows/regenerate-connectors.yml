@@ -23,7 +23,12 @@ on:
         required: false
         type: string
         default: ""
-      
+      distribution-zip:
+        description: "Distribution of the Ballerina version to be used"
+        required: false
+        type: string
+        default: ""
+
 jobs:
   build:
     name: Regenerate OpenAPI Connectors
@@ -43,4 +48,5 @@ jobs:
           ADDITIONAL_FLATTEN_FLAGS: ${{ github.event.inputs.additional-flatten-flags }}
           ALIGN_OPENAPI: ${{ github.event.inputs.align-openapi }}
           ADDITIONAL_ALIGN_FLAGS: ${{ github.event.inputs.additional-align-flags }}
+          DISTRIBUTION_ZIP: ${{ github.event.inputs.distribution-zip }}
           BAL_CONFIG_VAR_WORKFLOW: "regenerate-connector.yml"

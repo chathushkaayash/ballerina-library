@@ -24,6 +24,7 @@ const string FLATTEN_OPENAPI = "FLATTEN_OPENAPI";
 const string ADDITIONAL_FLATTEN_FLAGS = "ADDITIONAL_FLATTEN_FLAGS";
 const string ALIGN_OPENAPI = "ALIGN_OPENAPI";
 const string ADDITIONAL_ALIGN_FLAGS = "ADDITIONAL_ALIGN_FLAGS";
+const string DISTRIBUTION_ZIP = "DISTRIBUTION_ZIP";
 
 const string MODULE_LIST_JSON = "./resources/stdlib_modules.json";
 const string GITHUB_ORG = "chathushkaayash";
@@ -37,6 +38,7 @@ configurable boolean flattenOpenAPI = check boolean:fromString(os:getEnv(FLATTEN
 configurable string additionalFlattenFlags = os:getEnv(ADDITIONAL_FLATTEN_FLAGS);
 configurable boolean alignOpenAPI = check boolean:fromString(os:getEnv(ALIGN_OPENAPI));
 configurable string additionalAlignFlags = os:getEnv(ADDITIONAL_ALIGN_FLAGS);
+configurable boolean distributionZip = check boolean:fromString(os:getEnv(DISTRIBUTION_ZIP));
 
 // Provide the correct workflow as a configurable variable.
 configurable string workflow = ?;
@@ -116,7 +118,8 @@ isolated function triggerModuleRegeneration(Module m) returns int|error {
             "flatten-openapi": flattenOpenAPI,
             "additional-flatten-flags": additionalFlattenFlags,
             "align-openapi": alignOpenAPI,
-            "additional-align-flags": additionalAlignFlags
+            "additional-align-flags": additionalAlignFlags,
+            "distribution-zip": distributionZip
         }
     };
 
