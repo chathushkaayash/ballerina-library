@@ -79,8 +79,8 @@ jobs:
         run: |
           pwd
           echo "Downloading Ballerina distribution from provided URL..."
-          wget --no-check-certificate -O ballerina.zip "${{ inputs.distribution-zip }}"
-          unzip -o ballerina.zip -d temp_folder/
+          wget -q --no-check-certificate -O ballerina.zip "${{ inputs.distribution-zip }}"
+          unzip -o -q ballerina.zip -d temp_folder/
           cp -r temp_folder/ballerina-*/. ballerina-dist/
           rm -r temp_folder/
           echo "BAL_VERSION=${PWD}/ballerina-dist/bin/bal" >> $GITHUB_ENV
@@ -112,12 +112,14 @@ jobs:
       - name: Generate Ballerina Code
         working-directory: docs/spec
         run: |
-          ls
-          ../../ballerina-dist/bin/bal -v
-          echo ${{ env.BALLERINA_BIN }}
-          ${{ env.BALLERINA_BIN }} -v
           echo "Generating Ballerina code from OpenAPI Specification..."
           ${{ env.BALLERINA_BIN }} openapi -i openapi.json -o ../../ballerina/  --mode client
+
+      - name: Remove downloaded ballerina distribution
+        if: ${{ inputs.distribution-zip }}
+        run: |
+          echo "Cleaning up ballerina dist..."
+          rm -r ballerina-dist/
 
       - name: Configure Git Identity
         run: |
