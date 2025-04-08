@@ -33,6 +33,11 @@ on:
         required: false
         type: boolean
         default: true
+      ballerina-version:
+        description: "Ballerina Language Version"
+        required: false
+        type: string
+        default: ""
 
 jobs:
   build:
@@ -55,4 +60,5 @@ jobs:
           ADDITIONAL_ALIGN_FLAGS: ${{ github.event.inputs.additional-align-flags }}
           DISTRIBUTION_ZIP: ${{ github.event.inputs.distribution-zip }}
           AUTO_MERGE: ${{ github.event.inputs.auto-merge }}
+          BALLERINA_VERSION: ${{ github.event.inputs.ballerina-version }}
           BAL_CONFIG_VAR_WORKFLOW: "regenerate-connector.yml"

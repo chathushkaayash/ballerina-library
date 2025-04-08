@@ -26,6 +26,7 @@ const string ALIGN_OPENAPI = "ALIGN_OPENAPI";
 const string ADDITIONAL_ALIGN_FLAGS = "ADDITIONAL_ALIGN_FLAGS";
 const string DISTRIBUTION_ZIP = "DISTRIBUTION_ZIP";
 const string AUTO_MERGE = "AUTO_MERGE";
+const string BALLERINA_VERSION = "BALLERINA_VERSION";
 
 const string MODULE_LIST_JSON = "./resources/stdlib_modules.json";
 const string GITHUB_ORG = "chathushkaayash";
@@ -41,6 +42,7 @@ configurable boolean alignOpenAPI = check boolean:fromString(os:getEnv(ALIGN_OPE
 configurable string additionalAlignFlags = os:getEnv(ADDITIONAL_ALIGN_FLAGS);
 configurable string distributionZip = os:getEnv(DISTRIBUTION_ZIP);
 configurable boolean autoMerge = check boolean:fromString(os:getEnv(AUTO_MERGE));
+configurable string ballerinaVersion = os:getEnv(BALLERINA_VERSION);
 
 // Provide the correct workflow as a configurable variable.
 configurable string workflow = ?;
@@ -125,7 +127,8 @@ isolated function triggerModuleRegeneration(Module m) returns int|error {
             "align-openapi": alignOpenAPI,
             "additional-align-flags": additionalAlignFlags,
             "distribution-zip": distributionZip,
-            "auto-merge": autoMerge
+            "auto-merge": autoMerge,
+            "ballerina-version": ballerinaVersion
         }
     };
 
