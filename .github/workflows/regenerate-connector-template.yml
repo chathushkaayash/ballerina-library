@@ -27,6 +27,11 @@ on:
         required: false
         type: string
         default: ""
+      distribution-zip:
+        description: "Distribution of the Ballerina version to be used"
+        required: false
+        type: string
+        default: ""
 
 jobs:
   build:
@@ -47,6 +52,7 @@ jobs:
           fi
           echo "BAL_VERSION=$BAL_VERSION" >> $GITHUB_ENV
           echo "Ballerina Version: $BAL_VERSION"
+          BALLERINA_BIN="bal"
 
       - name: Set Up Ballerina
         uses: ballerina-platform/setup-ballerina@v1.1.3
@@ -68,6 +74,16 @@ jobs:
         run: |
           rm -f client.bal utils.bal types.bal
 
+      - name: Get Ballerina Distribution
+        if: ${{ inputs.distribution-zip }}
+        run: |
+          echo "Downloading Ballerina distribution from provided URL..."
+          wget --no-check-certificate -O ballerina.zip "${{ inputs.distribution-zip }}"
+          unzip -o ballerina.zip -d temp_folder/
+          cp -r temp_folder/ballerina-*/. ballerina-dist/
+          rm -r temp_folder/
+          BALLERINA_BIN="../../ballerina-dist/bin/bal"
+
       - name: Download openapi.json
         if: ${{ inputs.openapi-url }}
         working-directory: docs/spec
@@ -81,7 +97,7 @@ jobs:
         working-directory: docs/spec
         run: |
           echo "Flattening OpenAPI Specification..."
-          bal openapi flatten -i openapi.json ${{ inputs.additional-flatten-flags }}
+          $BALLERINA_BIN openapi flatten -i openapi.json ${{ inputs.additional-flatten-flags }}
           mv flattened_openapi.json openapi.json
 
       - name: Align OpenAPI Specification
@@ -89,14 +105,14 @@ jobs:
         if: ${{ inputs.align-openapi }}
         run: |
           echo "Aligning OpenAPI Specification..."
-          bal openapi align -i openapi.json ${{ inputs.additional-align-flags }}
+          $BALLERINA_BIN openapi align -i openapi.json ${{ inputs.additional-align-flags }}
           mv aligned_ballerina_openapi.json openapi.json
 
       - name: Generate Ballerina Code
         working-directory: ballerina
         run: |
           echo "Generating Ballerina code from OpenAPI Specification..."
-          bal openapi -i ../docs/spec/openapi.json --mode client
+          $BALLERINA_BIN openapi -i ../docs/spec/openapi.json --mode client
 
       - name: Configure Git Identity
         run: |
