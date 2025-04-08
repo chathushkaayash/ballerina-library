@@ -68,26 +68,24 @@ jobs:
         run: |
           rm -f client.bal utils.bal types.bal
 
-      - name: Download or Copy openapi.json
+      - name: Download openapi.json
+        if: ${{ inputs.openapi-url }}
+        working-directory: docs/spec
         run: |
-          if [ -n "${{ inputs.openapi-url }}" ]; then
-            echo "Downloading openapi.json from provided URL..."
-            wget -O ballerina/openapi.json "${{ inputs.openapi-url }}"
-          else
-            echo "Using existing openapi.json from docs/spec directory..."
-            cp docs/spec/openapi.json ballerina/openapi.json
-          fi
+          echo "Downloading openapi.json from provided URL..."
+          rm -f openapi.json
+          wget -O openapi.json "${{ inputs.openapi-url }}"
 
       - name: Flatten OpenAPI Specification
         if: ${{ inputs.flatten-openapi }}
-        working-directory: ballerina
+        working-directory: docs/spec
         run: |
           echo "Flattening OpenAPI Specification..."
           bal openapi flatten -i openapi.json ${{ inputs.additional-flatten-flags }}
           mv flattened_openapi.json openapi.json
 
       - name: Align OpenAPI Specification
-        working-directory: ballerina
+        working-directory: docs/spec
         if: ${{ inputs.align-openapi }}
         run: |
           echo "Aligning OpenAPI Specification..."
@@ -98,11 +96,7 @@ jobs:
         working-directory: ballerina
         run: |
           echo "Generating Ballerina code from OpenAPI Specification..."
-          bal openapi -i openapi.json --mode client
-
-      - name: Clean Up Intermediate Files
-        working-directory: ballerina
-        run: rm -f openapi.json
+          bal openapi -i ../docs/spec/openapi.json --mode client
 
       - name: Configure Git Identity
         run: |
