@@ -93,28 +93,33 @@ jobs:
           rm -f openapi.json
           wget -O openapi.json "${{ inputs.openapi-url }}"
 
+      - name: Read File Extension
+        run: |
+          file=$(echo openapi.*)
+          ext="${file##*.}"
+          echo "EXTENSION=$ext" >> "$GITHUB_ENV"
+
       - name: Flatten OpenAPI Specification
         if: ${{ inputs.flatten-openapi }}
         working-directory: docs/spec
         run: |
           echo "Flattening OpenAPI Specification..."
-          ${{ env.BALLERINA_CMD }} openapi flatten -i openapi.json ${{ inputs.additional-flatten-flags }}
-          mv flattened_openapi.json openapi.json
+          ${{ env.BALLERINA_CMD }} openapi flatten -i openapi.${{ env.EXTENSION}} ${{ inputs.additional-flatten-flags }}
+          mv flattened_openapi.${{ env.EXTENSION}} openapi.${{ env.EXTENSION}}
 
       - name: Align OpenAPI Specification
         working-directory: docs/spec
         if: ${{ inputs.align-openapi }}
         run: |
           echo "Aligning OpenAPI Specification..."
-          ${{ env.BALLERINA_CMD }} openapi align -i openapi.json ${{ inputs.additional-align-flags }}
-          mv aligned_ballerina_openapi.json openapi.json
+          ${{ env.BALLERINA_CMD }} openapi align -i openapi.${{ env.EXTENSION}} ${{ inputs.additional-align-flags }}
+          mv aligned_ballerina_openapi.${{ env.EXTENSION}} openapi.${{ env.EXTENSION}}
 
       - name: Generate Ballerina Code
         working-directory: docs/spec
         run: |
           echo "Generating Ballerina code from OpenAPI Specification..."
-          ${{ env.BALLERINA_CMD }} openapi -i openapi.json -o ../../ballerina/  --mode client --license ../license.txt
-
+          ${{ env.BALLERINA_CMD }} openapi -i openapi.${{ env.EXTENSION}} -o ../../ballerina/  --mode client --license ../license.txt
 
       - name: Configure Git Identity
         run: |
@@ -126,7 +131,7 @@ jobs:
         run: |
           git checkout -b regenerate-openapi-connector-${{ github.run_number }}
           git add ballerina
-          git add docs/spec/openapi.json
+          git add docs/spec
           if git diff --cached --quiet;
           then
               echo "hasChanged=false" >> $GITHUB_OUTPUT
