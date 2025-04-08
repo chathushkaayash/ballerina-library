@@ -115,11 +115,6 @@ jobs:
           echo "Generating Ballerina code from OpenAPI Specification..."
           ${{ env.BALLERINA_BIN }} openapi -i openapi.json -o ../../ballerina/  --mode client
 
-      - name: Remove downloaded ballerina distribution
-        if: ${{ inputs.distribution-zip }}
-        run: |
-          echo "Cleaning up ballerina dist..."
-          rm -r ballerina-dist/
 
       - name: Configure Git Identity
         run: |
@@ -130,7 +125,8 @@ jobs:
         id: commitFiles
         run: |
           git checkout -b regenerate-openapi-connector-${{ github.run_number }}
-          git add .
+          git add ballerina
+          git add docs/spec/openapi.json
           if git diff --cached --quiet;
           then
               echo "hasChanged=false" >> $GITHUB_OUTPUT
