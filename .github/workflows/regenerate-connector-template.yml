@@ -80,7 +80,7 @@ jobs:
           pwd
           echo "Downloading Ballerina distribution from provided URL..."
           wget --no-check-certificate -O ballerina.zip "${{ inputs.distribution-zip }}"
-          unzip -o ballerina.zip -d temp_folder/ -q
+          unzip -o ballerina.zip -d temp_folder/
           cp -r temp_folder/ballerina-*/. ballerina-dist/
           rm -r temp_folder/
           BALLERINA_BIN="../../ballerina-dist/bin/bal"
