@@ -25,6 +25,7 @@ const string ADDITIONAL_FLATTEN_FLAGS = "ADDITIONAL_FLATTEN_FLAGS";
 const string ALIGN_OPENAPI = "ALIGN_OPENAPI";
 const string ADDITIONAL_ALIGN_FLAGS = "ADDITIONAL_ALIGN_FLAGS";
 const string DISTRIBUTION_ZIP = "DISTRIBUTION_ZIP";
+const string AUTO_MERGE = "AUTO_MERGE";
 
 const string MODULE_LIST_JSON = "./resources/stdlib_modules.json";
 const string GITHUB_ORG = "chathushkaayash";
@@ -39,6 +40,7 @@ configurable string additionalFlattenFlags = os:getEnv(ADDITIONAL_FLATTEN_FLAGS)
 configurable boolean alignOpenAPI = check boolean:fromString(os:getEnv(ALIGN_OPENAPI));
 configurable string additionalAlignFlags = os:getEnv(ADDITIONAL_ALIGN_FLAGS);
 configurable string distributionZip = os:getEnv(DISTRIBUTION_ZIP);
+configurable boolean autoMerge = check boolean:fromString(os:getEnv(AUTO_MERGE));
 
 // Provide the correct workflow as a configurable variable.
 configurable string workflow = ?;
@@ -122,7 +124,8 @@ isolated function triggerModuleRegeneration(Module m) returns int|error {
             "additional-flatten-flags": additionalFlattenFlags,
             "align-openapi": alignOpenAPI,
             "additional-align-flags": additionalAlignFlags,
-            "distribution-zip": distributionZip
+            "distribution-zip": distributionZip,
+            "auto-merge": autoMerge
         }
     };
 

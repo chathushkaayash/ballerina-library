@@ -32,6 +32,11 @@ on:
         required: false
         type: string
         default: ""
+      auto-merge:
+        description: "Enable auto-merge of the PR"
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   build:
@@ -170,7 +175,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.BALLERINA_REVIEWER_BOT_TOKEN }}
 
       - name: Merge PR
-        if: ${{ steps.commitFiles.outputs.hasChanged == 'true' }}
+        if: ${{ steps.commitFiles.outputs.hasChanged == 'true' && inputs.auto-merge == true }}
         run: |
           checkComplete="0"
           while [ "$checkComplete" != "1" ]; do

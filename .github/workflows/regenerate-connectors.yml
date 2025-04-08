@@ -28,6 +28,11 @@ on:
         required: false
         type: string
         default: ""
+      auto-merge:
+        description: "Enable auto-merge of the PR"
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   build:
@@ -49,4 +54,5 @@ jobs:
           ALIGN_OPENAPI: ${{ github.event.inputs.align-openapi }}
           ADDITIONAL_ALIGN_FLAGS: ${{ github.event.inputs.additional-align-flags }}
           DISTRIBUTION_ZIP: ${{ github.event.inputs.distribution-zip }}
+          AUTO_MERGE: ${{ github.event.inputs.auto-merge }}
           BAL_CONFIG_VAR_WORKFLOW: "regenerate-connector.yml"
