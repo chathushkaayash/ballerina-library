@@ -83,7 +83,7 @@ jobs:
           unzip -o ballerina.zip -d temp_folder/
           cp -r temp_folder/ballerina-*/. ballerina-dist/
           rm -r temp_folder/
-          BALLERINA_BIN="../../ballerina-dist/bin/bal"
+          export BALLERINA_BIN="${PWD}/ballerina-dist/bin/bal"
 
       - name: Download openapi.json
         if: ${{ inputs.openapi-url }}
