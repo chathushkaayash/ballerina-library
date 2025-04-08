@@ -109,10 +109,10 @@ jobs:
           mv aligned_ballerina_openapi.json openapi.json
 
       - name: Generate Ballerina Code
-        working-directory: ballerina
+        working-directory: docs/spec
         run: |
           echo "Generating Ballerina code from OpenAPI Specification..."
-          $BALLERINA_BIN openapi -i ../docs/spec/openapi.json --mode client
+          $BALLERINA_BIN openapi -i openapi.json -o ../../ballerina/  --mode client
 
       - name: Configure Git Identity
         run: |
